@@ -1,0 +1,20 @@
+# build outputs
+*.o
+*.out
+*.a
+*.so
+btest
+fshow
+ishow
+datalab-handout/test
+
+# original handout tarballs (re-download from the CS:APP site)
+*.tar
+*.tar.gz
+
+# editor / OS junk
+*~
+*.swp
+.vscode/
+.idea/
+.DS_Store
