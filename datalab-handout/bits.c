@@ -289,7 +289,26 @@ int howManyBits(int x) {
  *   Rating: 4
  */
 unsigned floatScale2(unsigned uf) {
-  return 2;
+  // [s][exp][frac bits]
+  // exp can be 0xFF, NaN/inf case, we just return that
+  unsigned exp = (uf >> 23) & 0xFF;
+  unsigned sign = uf & 0x80000000; // keeps sign
+
+  if (exp == 0xFF) {
+      return uf;
+  }
+
+  if (exp == 0) {             // denormal (and zero)
+    return sign | (uf << 1);
+  }
+
+  exp = exp + 1;
+
+  if (exp == 0xFF) {
+    return 0x7F800000 | uf;
+  }
+
+  return uf + (1 << 23);
 }
 /* 
  * floatFloat2Int - Return bit-level equivalent of expression (int) f
