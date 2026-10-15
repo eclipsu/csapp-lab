@@ -323,7 +323,35 @@ unsigned floatScale2(unsigned uf) {
  *   Rating: 4
  */
 int floatFloat2Int(unsigned uf) {
-  return 2;
+  unsigned exp = (uf >> 23) & 0xFF;
+  unsigned sign = uf & 0x80000000; // keeps sign
+  unsigned frac = uf & 0x7FFFFF;
+  unsigned sig = frac | (1 << 23);
+  int E = exp - 127;
+  int result;
+
+  
+  
+  if (E < 0) {
+    return 0;
+  }
+  if (E >= 31) {
+    return 0x80000000u;
+  }
+
+  
+  if (E < 23) {
+    result = sig >> (23 - E);
+  } else {
+    result = sig << (E - 23);
+  }
+
+  if (sign) {
+    return -result;
+  } else {
+    return result;
+  } 
+
 }
 /* 
  * floatPower2 - Return bit-level equivalent of the expression 2.0^x
